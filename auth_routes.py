@@ -20,8 +20,9 @@ async def hello(Authorize: AuthJWT = Depends()):
     
 
 
-@auth_router.post('/signup', response_model=SignUpModel, status_code=201)
-async def signup(user: SignUpModel, db: Session = Depends(get_db)):
+@auth_router.post('/signup', response_model=SignUpRequest, status_code=201)
+async def signup(user: SignUpRequest, db: Session = Depends(get_db)):
+
 
     # check email
     if db.query(User).filter(User.email == user.email).first():

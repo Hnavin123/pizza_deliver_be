@@ -1,6 +1,9 @@
 from pydantic import BaseModel
 from typing import Optional
-from fastapi_jwt_auth_v2 import AuthJWT
+# from fastapi_jwt_auth_v2 import AuthJWT
+from fastapi_jwt_auth import AuthJWT
+
+
 
 class SignUpModel(BaseModel):
     id:Optional[int]
@@ -26,4 +29,17 @@ def get_config():
 class LoginModel(BaseModel):
     username: str
     password: str
+        
+        
+
+class OrderModel(BaseModel):
+    id: Optional[int] =None
+    quantity: int
+    order_status: Optional[str] = "pending"
+    pizza_size: Optional[str] = "small"
+    user_id: Optional[int] = None
+    
+    
+    class Config:
+        orm_mode = True
         

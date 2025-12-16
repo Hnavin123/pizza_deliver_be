@@ -1,9 +1,41 @@
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import declarative_base, session 
+
+# DATABASE_URL = 'postgresql://postgres:abc123@localhost:5432/pizza_delivery_db'
+
+# engine = create_engine(DATABASE_URL, echo=True)
+
+# SessionLocal = session(autocommit=False, autoflush=False, bind=engine)
+
+# Base = declarative_base()
+
+# # Dependency for FastAPI
+# def get_db():
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
+
+
+
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker  # <- use sessionmaker
 
-engine = create_engine('postgresql://postgres:abc123@localhost:5432/pizza_delivery_db', echo=True)
+DATABASE_URL = 'postgresql://postgres:abc123@localhost:5432/pizza_delivery_db'
+
+engine = create_engine(DATABASE_URL, echo=True)
+
+# Correct way to create a Session factory
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-Session = sessionmaker(bind=engine) 
+# Dependency for FastAPI
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
